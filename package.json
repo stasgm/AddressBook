@@ -1,0 +1,10 @@
+{
+  "name": "AddressBook",
+  "version": "1.0.0",
+  "description": "Simple Address book - contact list",
+  "main": "index.jsx",
+  "repository": "https://github.com/stasgm/AddressBook",
+  "author": "Stanislau Shliakhtsich <stasgm@gmail.com>",
+  "license": "MIT",
+  "private": false
+}
