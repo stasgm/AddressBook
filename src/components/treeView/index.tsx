@@ -2,6 +2,7 @@
 
 import { autobind } from 'core-decorators';
 import * as React from 'react';
+import { Button } from 'antd';
 
 import Tree, { TreeNode } from 'rc-tree';
 
@@ -126,6 +127,7 @@ export default class TreeView extends React.Component<IMainProps, IMainState> {
     return (
       <div>
         <h2>dynamic render</h2>
+        <Button type="primary">Button</Button>
         <Tree
           onSelect={this.onSelect}
           checkable

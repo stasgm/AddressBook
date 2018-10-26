@@ -5,6 +5,7 @@
     "jsx": "react",
     "module": "commonjs",
     "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,        
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "declaration": false,

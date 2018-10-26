@@ -4,13 +4,13 @@ var plugins = require("./plugins");
 const awesomeTypeScript = {
   test: /\.tsx?$/,
   use: "awesome-typescript-loader",
-  exclude: /node_modules/
+  exclude: /node_modules/,
 };
 
 // sass loader
 const sassDev = {
   test: /\.(scss|css)$/,
-  use: ["style-loader", "css-loader", "postcss-loader", "sass-loader"]
+  use: ["style-loader", "css-loader", "postcss-loader", "sass-loader"],
 };
 
 // produciton sass loader separates all css files into a separate file, not inlined with js
@@ -20,19 +20,19 @@ const sassProd = {
     plugins.MiniCssExtractPlugin.loader,
     "css-loader",
     "postcss-loader",
-    "sass-loader"
-  ]
+    "sass-loader",
+  ],
 };
 
 // assets loaders
 const fileLoader = {
   test: /\.(png|jpg|jpeg|gif|svg)$/,
-  use: "file-loader?name=./assets/images/[name].[ext]"
+  use: "file-loader?name=./assets/images/[name].[ext]",
 };
 
 const fontLoader = {
   test: /\.(woff|woff2|eot|ttf|otf)$/,
-  use: ["file-loader?name=./assets/fonts/[name].[ext]"]
+  use: ["file-loader?name=./assets/fonts/[name].[ext]"],
 };
 
 // get loaders function
