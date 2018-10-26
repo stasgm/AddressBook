@@ -1,30 +1,85 @@
 {
-  "name": "test-router",
+  "name": "template-ts-react",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "firebase": "^4.8.1",
-    "history": "^4.7.2",
-    "react": "^16.2.0",
-    "react-bootstrap": "^0.31.5",
-    "react-dom": "^16.2.0",
-    "react-redux": "^5.0.6",
-    "react-router-bootstrap": "^0.24.4",
-    "react-router-dom": "^4.2.2",
-    "react-router-redux": "^5.0.0-alpha.9",
-    "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0"
+  "description": "Template project that includes React, TypeScript, React-Router, Sass and Webpack v4",
+  "main": "index.js",
+  "author": {
+    "name": "Dino Kacevenda",
+    "email": "kacavendadino@gmail.com"
   },
-  "devDependencies": {
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-loader": "^1.9.0",
-    "eslint-plugin-react": "^7.5.1",
-    "react-scripts": "1.0.17"
+  "keywords": [
+    "react",
+    "typescript",
+    "webpack",
+    "sass",
+    "react-router",
+    "redux",
+    "tslint",
+    "yarn"
+  ],
+  "repository": {
+    "url": "https://github.com/Kaca992/template-ts-react"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --debug --output-pathinfo --history-api-fallback --hot --inline --progress --colors --port 3000 --open",
+    "mobile-dev": "webpack-dev-server --debug --output-pathinfo --history-api-fallback --hot --inline --progress --colors --port 3000 --open --host {enter ip adress here}",
+    "build": "set NODE_ENV=production&webpack --progress --colors",
+    "clean-modules": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command Remove-Item .\\node_modules -Force -Recurse"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "@types/classnames": "2.2.6",
+    "@types/lodash": "^4.14.117",
+    "@types/node": "10.12.0",
+    "@types/react": "^16.4.18",
+    "@types/react-dom": "^16.0.9",
+    "@types/react-redux": "6.0.9",
+    "@types/react-router-dom": "^4.3.1",
+    "@types/redux": "3.6.0",
+    "@types/redux-logger": "^3.0.6",
+    "@types/rc-tree": "^1.11.2",    
+    "autoprefixer": "^9.3.1",
+    "awesome-typescript-loader": "^5.2.1",
+    "compression-webpack-plugin": "^2.0.0",
+    "css-loader": "^1.0.0",
+    "file-loader": "^2.0.0",
+    "filemanager-webpack-plugin": "^2.0.5",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.4.4",
+    "node-sass": "^4.9.4",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "tslint": "^5.11.0",
+    "tslint-react": "^3.6.0",
+    "tslint-webpack-plugin": "^1.2.2",
+    "typescript": "^3.1.3",
+    "webpack": "^4.23.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10",
+    "webpack-visualizer-plugin": "^0.1.11"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "classnames": "^2.2.6",
+    "core-decorators": "^0.20.0",
+    "global": "^4.3.2",
+    "isomorphic-fetch": "^2.2.1",
+    "lodash": "^4.17.11",
+    "rc-tree": "^1.14.8",
+    "react": "^16.6.0",
+    "react-dom": "^16.6.0",
+    "react-redux": "^5.1.0",
+    "react-router-dom": "^4.3.1",
+    "redux": "4.0.1",
+    "redux-devtools-extension": "2.13.5",
+    "redux-logger": "3.0.6",
+    "redux-thunk": "2.3.0",
+    "reselect": "4.0.0"
   }
 }
