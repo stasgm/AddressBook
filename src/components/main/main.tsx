@@ -2,6 +2,7 @@
 import { RoutesEnum } from '@common/config/router.config';
 import RouterParamTest from '@components/routerParamTest/routerParamTest';
 import TreeView from '@components/TreeView';
+import { Scrape } from '@components/scrape';
 import { autobind } from 'core-decorators';
 import * as React from 'react';
 import { Route, Link } from 'react-router-dom';
@@ -42,6 +43,7 @@ export default class Main extends React.Component<IMainProps, IMainState> {
           </ul>
         </Menu> */}
         <Route exact path={RoutesEnum.Root} component={this._renderRoot} />
+        <Route path={RoutesEnum.Scrape} component={Scrape} />
         <Route path={RoutesEnum.Test} component={this._renderTest} />
         <Route path={RoutesEnum.TestRouterParams} component={({ match }) => <RouterParamTest id={match.params.id} />} />
         <Route path={RoutesEnum.TreeView} component={TreeView} />

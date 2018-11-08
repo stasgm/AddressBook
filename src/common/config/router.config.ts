@@ -1,6 +1,7 @@
 export enum RoutesEnum {
-  Root = "/",
-  Test = "/test",
-  TreeView = "/treeview",
-  TestRouterParams = "/test/:id"
+  Root = '/',
+  Scrape = '/scrape',
+  Test = '/test',
+  TreeView = '/treeview',
+  TestRouterParams = '/test/:id'
 }

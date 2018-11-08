@@ -1,58 +1,118 @@
-const path = require("path");
-const webpack = require("webpack");
+var webpack = require('webpack');
+var path = require('path');
 
-const rules = require("./webpack/rules");
-const plugins = require("./webpack/plugins");
+// variables
+var isProduction = process.argv.indexOf('-p') >= 0 || process.env.NODE_ENV === 'production';
+var sourcePath = path.join(__dirname, './src');
+var outPath = path.join(__dirname, './dist');
 
-const isProduction = process.env.NODE_ENV === "production";
+// plugins
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+var MiniCssExtractPlugin = require('mini-css-extract-plugin');
+var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 
-module.exports = env => {
-  return {
-    entry: {
-      // IE support, if not needed you can remove this and babel from awesome TS loader
-      babel_polyfill: "babel-polyfill",
-      main: "./src/index.tsx",
-    },
-    devtool: isProduction ? "source-map" : "inline-source-map",
-    output: {
-      filename: "[name].[hash].bundle.js",
-      chunkFilename: "[name].[hash].bundle.js",
-      path: path.resolve(__dirname, "dist"),
-      publicPath: isProduction ? "./" : "/",
-    },
-    // sets some default plugins like uglify
-    mode: isProduction ? "production" : "development",
-    resolve: {
-      extensions: [".js", ".json", ".ts", ".tsx"],
-      alias: {
-        // CUSTOM PACKAGES:
-        // enables custom paths on import. IMPORTANT!: need to be defined in typescript path also + baseUrl
-        "@common": path.resolve(__dirname, "src/common"),
-        "@components": path.resolve(__dirname, "src/components"),
-        "@containers": path.resolve(__dirname, "src/containers"),
-        "@actions": path.resolve(__dirname, "src/actions"),
-        "@reducers": path.resolve(__dirname, "src/reducers"),
+module.exports = {
+  context: sourcePath,
+  entry: {
+    app: './index.tsx'
+  },
+  output: {
+    path: outPath,
+    filename: 'bundle.js',
+    chunkFilename: '[chunkhash].js',
+    publicPath: '/'
+  },
+  target: 'web',
+  resolve: {
+    extensions: ['.js', '.ts', '.tsx'],
+    // Fix webpack's default behavior to not load packages with jsnext:main module
+    // (jsnext:main directs not usually distributable es6 format, but es6 sources)
+    mainFields: ['module', 'browser', 'main'],
+    alias: {
+      app: path.resolve(__dirname, 'src/'),
+      '@common': path.resolve(__dirname, 'src/common'),
+      '@components': path.resolve(__dirname, 'src/components'),
+      '@containers': path.resolve(__dirname, 'src/containers'),
+      '@actions': path.resolve(__dirname, 'src/actions'),
+      '@reducers': path.resolve(__dirname, 'src/reducers')
+    }
+  },
+  module: {
+    rules: [
+      // .ts, .tsx
+      {
+        test: /\.tsx?$/,
+        use: [
+          !isProduction && {
+            loader: 'babel-loader',
+            options: { plugins: ['react-hot-loader/babel'] }
+          },
+          'ts-loader'
+        ].filter(Boolean)
       },
-    },
-    module: {
-      rules: rules.getRules(isProduction),
-    },
-    plugins: plugins.getPlugins(isProduction),
-    optimization: isProduction ? {
-      splitChunks: {
-        chunks: "all",
+      // sass/css
+      {
+        test: /\.(scss|css)$/,
+        use: [
+          isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+          'css-loader',
+          'postcss-loader',
+          'sass-loader'
+        ]
       },
-      minimizer: [new plugins.OptimizeCSSAssetsPlugin({})],
-    } : {},
-    devServer: {
-      contentBase: path.resolve(__dirname, "src"),
-      hot: true,
+      // static assets
+      { test: /\.html$/, use: 'html-loader' },
+      { test: /\.(a?png|svg)$/, use: 'url-loader?limit=10000' },
+      { test: /\.(jpe?g|gif|bmp|mp3|mp4|ogg|wav|eot|ttf|woff|woff2)$/, use: 'file-loader' }
+    ]
+  },
+  optimization: {
+    splitChunks: {
+      name: true,
+      cacheGroups: {
+        commons: {
+          chunks: 'initial',
+          minChunks: 2
+        },
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          chunks: 'all',
+          priority: -10
+        }
+      }
     },
-    // node: {
-    //   // workaround for webpack-dev-server issue
-    //   // https://github.com/webpack/webpack-dev-server/issues/60#issuecomment-103411179
-    //   fs: 'empty',
-    //   net: 'empty'
-    // }
-  };
+    runtimeChunk: true
+  },
+  plugins: [
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: 'development', // use 'development' unless process.env.NODE_ENV is defined
+      DEBUG: false
+    }),
+    new WebpackCleanupPlugin(),
+    new MiniCssExtractPlugin({
+      filename: '[contenthash].css',
+      disable: !isProduction
+    }),
+    new HtmlWebpackPlugin({
+      template: './assets/index.html'
+    })
+  ],
+  devServer: {
+    contentBase: sourcePath,
+    hot: true,
+    inline: true,
+    historyApiFallback: {
+      disableDotRule: true
+    },
+    stats: 'minimal',
+    clientLogLevel: 'warning'
+  },
+  // https://webpack.js.org/configuration/devtool/
+  devtool: isProduction ? 'hidden-source-map' : 'cheap-module-eval-source-map',
+  node: {
+    // workaround for webpack-dev-server issue
+    // https://github.com/webpack/webpack-dev-server/issues/60#issuecomment-103411179
+    fs: 'empty',
+    net: 'empty'
+  }
 };
